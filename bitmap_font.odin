@@ -37,7 +37,7 @@ get_string_width :: proc(using f: ^Bitmap_Font, str: string) -> int {
     return len(str) * int(character_width);
 }
 
-draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: i32) {
+draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: i32) -> i32 {
     n := i32(0);
     for c in str {
         i := -1;
@@ -69,8 +69,10 @@ draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: 
             character_height
         };
 
-        sdl.render_copy(r, texture, &src, &dst);
+        if r := sdl.render_copy(r, texture, &src, &dst); r != 0 do return r;
 
         n += 1;
     }
+
+    return 0;
 }
