@@ -49,7 +49,11 @@ draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: 
             }
             j += 1;
         }
-        if i == -1 do continue;
+
+        if i == -1 {
+            n += 1;
+            continue;
+        }
 
         per_line := int(width) / int(character_width);
         k := i32(i % per_line);
