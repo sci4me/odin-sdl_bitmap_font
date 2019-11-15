@@ -2,6 +2,8 @@
 
 This is just a suuuuper-simple bitmap font rendering library for SDL2.
 
+DISCLAIMER: This was written in like three minutes. Use at your own peril.
+
 ## Usage
 ```
 import fnt "shared:odin-sdl_bitmap_font"
