@@ -33,8 +33,8 @@ destroy_character_font :: proc(using f: ^Bitmap_Font) {
     free(f);
 }
 
-get_string_width :: proc(using f: ^Bitmap_Font, str: string) -> int {
-    return len(str) * int(character_width);
+get_string_width :: proc(using f: ^Bitmap_Font, str: string) -> i32 {
+    return i32(len(str)) * character_width;
 }
 
 draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: i32) -> i32 {
