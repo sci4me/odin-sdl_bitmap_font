@@ -1,5 +1,6 @@
 package bitmap_font
 
+import "core:fmt"
 import "core:strings"
 
 import sdl "shared:odin-sdl2"
@@ -28,7 +29,7 @@ make_bitmap_font :: proc(_texture: ^sdl.Texture, _character_width: i32, _charact
     return f;
 }
 
-destroy_character_font :: proc(using f: ^Bitmap_Font) {
+destroy_bitmap_font :: proc(using f: ^Bitmap_Font) {
     sdl.destroy_texture(texture);
     free(f);
 }
