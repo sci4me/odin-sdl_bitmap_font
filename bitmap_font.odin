@@ -12,7 +12,7 @@ Bitmap_Font :: struct {
     height: i32,
     character_width: i32,
     character_height: i32,
-    characters: string
+    characters: map[rune]int
 }
 
 make_bitmap_font :: proc(_texture: ^sdl.Texture, _character_width: i32, _character_height: i32, _characters: string) -> ^Bitmap_Font {
@@ -20,16 +20,25 @@ make_bitmap_font :: proc(_texture: ^sdl.Texture, _character_width: i32, _charact
     if sdl.query_texture(_texture, nil, nil, &w, &h) != 0 do return nil;
 
     using f := new(Bitmap_Font);
+    
     texture = _texture;
     width = w;
     height = h;
     character_width = _character_width;
     character_height = _character_height;
-    characters = _characters;
+    characters = make(map[rune]int);
+
+    i := 0;
+    for c in _characters {
+        characters[c] = i;
+        i += 1;
+    }
+
     return f;
 }
 
 destroy_bitmap_font :: proc(using f: ^Bitmap_Font) {
+    delete(characters);
     sdl.destroy_texture(texture);
     free(f);
 }
@@ -41,20 +50,11 @@ get_string_width :: proc(using f: ^Bitmap_Font, str: string) -> i32 {
 draw_string :: proc(using f: ^Bitmap_Font, r: ^sdl.Renderer, str: string, x, y: i32) -> i32 {
     n := i32(0);
     for c in str {
-        i := -1;
-        j := 0;
-        for x in characters {
-            if x == c {
-                i = j;
-                break;
-            }
-            j += 1;
-        }
-
-        if i == -1 {
+        i, ok := characters[c];
+        if !ok {
             n += 1;
             continue;
-        }
+        }        
 
         per_line := int(width) / int(character_width);
         k := i32(i % per_line);
